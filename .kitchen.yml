@@ -4,6 +4,9 @@ provisioner:
 
 verifier:
   name: terraform
+  systems:
+    - name: nslookup
+      backend: local
 
 platforms:
   - name: terraform

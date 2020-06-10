@@ -6,7 +6,7 @@ provider "infoblox" {
   username = var.infoblox_username
   server   = var.infoblox_host
   password = var.infoblox_password
-  sslmode  = var.sslmode
+  sslmode  = var.ssl_mode
 }
 
 resource "infoblox_a_record" "a_record" {

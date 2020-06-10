@@ -13,6 +13,11 @@ variable infoblox_host {
   type        = string
 }
 
+variable ssl_mode {
+  description = "Use SSL when connecting to infoblox server"
+  default     = false
+}
+
 variable "record_ip" {
   description = "Static IP for the a-record"
   type        = string

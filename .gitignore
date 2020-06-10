@@ -1,3 +1,7 @@
+#Kitchen terraform
+*.kitchen
+
+#Terraform variables
 *terraform.tfvars
 
 # Local .terraform directories
