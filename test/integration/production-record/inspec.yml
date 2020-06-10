@@ -1,0 +1,19 @@
+name: production-record
+title: Infoblox InSpec Profile
+maintainer: Brown CIS
+copyright: Brown University
+license: MIT
+summary: An InSpec Compliance Profile For Infobox a-record
+version: 0.1.0
+inspec_version: ">= 2.3.5"
+attributes:
+  - name: record_ip
+    required: true
+    description: "The IP of the a-record."
+    type: string
+  - name: record_fqdn
+    required: true
+    description: "Full Qualified Domain Name of the a-record."
+    type: string
+supports:
+  - platform: os

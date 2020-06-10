@@ -1,0 +1,17 @@
+---
+provisioner:
+  name: terraform
+
+verifier:
+  name: terraform
+
+platforms:
+  - name: terraform
+
+suites:
+  - name: production-record
+    driver:
+      name: terraform
+      root_module_directory: examples/production-record
+      parallelism: 4
+      command_timeout: 1800
