@@ -1,7 +1,5 @@
 # terraform-infoblox-record-a
 
-Terraform module
-
 [Terraform](https://www.terraform.io/) module for creating a-records via Infoblox.
 
 The example includes typical values used at Brown University
