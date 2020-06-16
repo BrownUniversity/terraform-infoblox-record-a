@@ -13,7 +13,7 @@ You will need Infobox credentials and permission of the specified zone and view.
 ## How do you use this module?
 
 This folder defines a [Terraform module](https://www.terraform.io/docs/modules/usage.html), which you can use in your
-code by adding a `module` configuration and setting its `source` parameter to URL of this folder. See the examples folder for guidance
+code by adding a `module` configuration and setting its `source` parameter to URL of this folder. See the [examples](/examples) folder for guidance
 
 ## Testing
 
