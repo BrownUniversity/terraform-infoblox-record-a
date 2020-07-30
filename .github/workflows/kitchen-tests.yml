@@ -1,0 +1,17 @@
+name: kitchen-tests
+
+on: [workflow_dispatch]
+
+jobs:
+  all:
+    if: "!contains(github.event.commits[0].message, '[skip ci]')"
+    runs-on: ubuntu-latest
+    container: brownccv/kitchen-terraform:latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run Kitchen
+      run: kitchen test
+      env:
+        TF_VAR_infoblox_username: ${{ secrets.INFOBLOX_JHUB_USER }}
+        TF_VAR_infoblox_password: ${{ secrets.INFOBLOX_JHUB_PSWD }}
+
