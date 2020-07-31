@@ -1,11 +1,11 @@
 name: kitchen-tests
 
-on: [workflow_dispatch]
+on: [push, workflow_dispatch]
 
 jobs:
   all:
     if: "!contains(github.event.commits[0].message, '[skip ci]')"
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     container: brownccv/kitchen-terraform:latest
     steps:
     - uses: actions/checkout@v1
