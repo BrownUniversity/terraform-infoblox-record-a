@@ -3,12 +3,37 @@ name: kitchen-tests
 on: [push, workflow_dispatch]
 
 jobs:
-  all:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: dorny/paths-filter@v2.2.0
+        id: filter
+        with:
+          base: ${{ github.ref }}
+          # inline YAML or path to separate file (e.g.: .github/filters.yaml)
+          filters: |
+            all:
+              - '.github/workflows/kitchen-tests.yml'
+              - 'Dockerfile'
+              - 'Gemfile*'
+      - name: Build and Push to Docker Hub
+        if: steps.filter.outputs.all == 'true' && !contains(github.event.commits[0].message, '[skip docker]')
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+          repository: brownccv/kitchen-terraform
+          tags: infoblox-record-a
+  test:
+    needs: [docker]
     if: "!contains(github.event.commits[0].message, '[skip ci]')"
     runs-on: self-hosted
-    container: brownccv/kitchen-terraform:latest
+    container: brownccv/kitchen-terraform:infoblox-record-a
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+      with:
+        clean: false
     - name: Run Kitchen
       run: kitchen test
       env:

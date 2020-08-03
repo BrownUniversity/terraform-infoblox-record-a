@@ -33,7 +33,7 @@ code by adding a `module` configuration and setting its `source` parameter to UR
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12 |
+| terraform | ~> 0.12 |
 | infoblox | v1.0.0 |
 | infoblox | >= 1.0, <2.0.0 |
 
@@ -108,5 +108,10 @@ This project has three workflows enabled:
 
 2. Release Drafter: When merging to master, a release is drafted using the [Release-Drafter Action](https://github.com/marketplace/actions/release-drafter)
 
-3. `Kitchen test` is run on every commit unless `[skip ci]` is added to commit message.
+3. `Kitchen test` contains two jobs
+    a. Build and push docker image. This job will run if changed files match any of:
+        - '.github/workflows/kitchen-tests.yml'
+        - 'Dockerfile'
+        - 'Gemfile*', 
+    b. `kitche-test` is run on every commit unless `[skip ci]` is added to commit message. This workflow runs on a self-hosted runner baceuse `infoblox` is behind our network. To avoid permission errors due to the container action writing files as ROOT, cleaning prior to checkout has been disabled
 
