@@ -33,7 +33,7 @@ code by adding a `module` configuration and setting its `source` parameter to UR
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12 |
+| terraform | ~> 0.12 |
 | infoblox | v1.0.0 |
 | infoblox | >= 1.0, <2.0.0 |
 
