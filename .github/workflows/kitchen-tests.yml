@@ -9,6 +9,8 @@ jobs:
     container: brownccv/kitchen-terraform:latest
     steps:
     - uses: actions/checkout@v1
+      with:
+        clean: false
     - name: Run Kitchen
       run: kitchen test
       env:
