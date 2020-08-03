@@ -1,23 +1,26 @@
 FROM hashicorp/terraform:0.12.29
 
-ENV BUILD_PACKAGES bash curl-dev curl ruby-dev build-base python3
-ENV RUBY_PACKAGES ruby-full
+COPY .ruby-version .ruby-version
 
 # Update and install all of the required packages.
 # At the end, remove the apk cache
-RUN apk update && \
-    apk upgrade && \
-    apk add $BUILD_PACKAGES && \
-    apk add $RUBY_PACKAGES && \
+RUN apk upgrade && \
+    apk add --update \
+    bash \
+    curl-dev \
+    curl \
+    "ruby-dev<$(cat .ruby-version)-r2" \
+    build-base \
+    python3 && \
     rm -rf /var/cache/apk/*
 
 RUN mkdir /usr/app
 WORKDIR /usr/app
 
 COPY Gemfile* ./
-RUN gem install bundler
-RUN bundle config set system 'true'
-RUN bundle install
+RUN gem install bundler && \
+    bundle config set system 'true' && \
+    bundle install
 
 
 ENTRYPOINT ["/bin/bash"]
