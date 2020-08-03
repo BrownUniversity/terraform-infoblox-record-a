@@ -4,7 +4,6 @@ on: [push, workflow_dispatch]
 
 jobs:
   docker:
-    if: "!contains(github.event.commits[0].message, '[skip docker]')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,7 +18,7 @@ jobs:
               - 'Dockerfile'
               - 'Gemfile*'
       - name: Build and Push to Docker Hub
-        if: steps.filter.outputs.all == 'true'
+        if: steps.filter.outputs.all == 'true' && !contains(github.event.commits[0].message, '[skip docker]')
         uses: docker/build-push-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
