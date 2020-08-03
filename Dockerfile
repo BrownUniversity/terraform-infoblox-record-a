@@ -9,7 +9,7 @@ RUN apk upgrade && \
     bash \
     curl-dev \
     curl \
-    "ruby-dev-$(cat .ruby-version)-r3" \
+    "ruby-dev=$(cat .ruby-version)" \
     build-base \
     python3 && \
     rm -rf /var/cache/apk/*
