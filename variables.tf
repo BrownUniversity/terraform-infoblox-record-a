@@ -1,3 +1,9 @@
+variable enabled {
+  description = "Enable this resource? This can go away with terraform v0.13"
+  type        = bool
+  default     = true
+}
+
 variable infoblox_username {
   description = "Username to authenticate with Infoblox server"
   type        = string

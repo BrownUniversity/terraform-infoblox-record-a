@@ -47,6 +47,7 @@ code by adding a `module` configuration and setting its `source` parameter to UR
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| enabled | Enable this resource? This can go away with terraform v0.13 | `bool` | `true` | no |
 | infoblox\_host | Infoblox host | `string` | n/a | yes |
 | infoblox\_password | Password to authenticate with Infoblox server | `string` | n/a | yes |
 | infoblox\_username | Username to authenticate with Infoblox server | `string` | n/a | yes |
