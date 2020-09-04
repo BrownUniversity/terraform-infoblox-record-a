@@ -1,5 +1,5 @@
 variable enabled {
-  description = "Enable this respurce? This can go away with terraform v0.13"
+  description = "Enable this resource? This can go away with terraform v0.13"
   type        = bool
   default     = true
 }
