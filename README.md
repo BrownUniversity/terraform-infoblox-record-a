@@ -109,8 +109,9 @@ This project has three workflows enabled:
 
 2. Release Drafter: When merging to master, a release is drafted using the [Release-Drafter Action](https://github.com/marketplace/actions/release-drafter)
 
-3. Kitchen test contains three jobs
-    a. Build and push docker image. This job will run if changed files match any of: 
-    b. kitchen-test. ⚠️  This workflow runs on a self-hosted runner baceuse `infoblox` is behind our network. For scurity reasons it only runs on a manual dispatch so that the self-hosted runner is not exposed to outside PRs. In the self hosted runner there are important considarations about cleanning up files and dangling docker images. Also to avoid permission errors due to the container action writing files as ROOT, cleaning prior to checkout has been disabled
-    c. Clean up dangling images on self-hosted
+3. Kitchen test: ⚠️This workflow runs on a self-hosted runner baceuse `infoblox` is behind our network. For scurity reasons it only runs on a manual dispatch so that the self-hosted runner is not exposed to outside PRs. In the self hosted runner there are important considarations about cleanning up files and dangling docker images. Also to avoid permission errors due to the container action writing files as ROOT, cleaning prior to checkout has been disabled. contains three jobs:
+    
+    * Build and push docker image. 
+    * Kitchen tests
+    * Clean up dangling images on self-hosteds
 
