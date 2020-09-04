@@ -10,6 +10,7 @@ provider "infoblox" {
 }
 
 resource "infoblox_a_record" "a_record" {
+  count             = var.enabled ? 1 : 0
   network_view_name = var.record_dns_view
   vm_name           = var.record_hostname
   cidr              = "${var.record_ip}/32"
