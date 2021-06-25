@@ -1,7 +1,10 @@
 terraform {
-  required_version = "~> 0.12"
+  required_version = ">= 1.0"
 
   required_providers {
-    infoblox = ">= 1.0, <2.0.0"
+    infoblox = {
+      source  = "infobloxopen/infoblox"
+      version = ">= 1.0, <2.0.0"
+    }
   }
 }

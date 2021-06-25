@@ -33,34 +33,42 @@ code by adding a `module` configuration and setting its `source` parameter to UR
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12 |
-| infoblox | v1.0.0 |
-| infoblox | >= 1.0, <2.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
+| <a name="requirement_infoblox"></a> [infoblox](#requirement\_infoblox) | >= 1.0, <2.0.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| infoblox | v1.0.0 >= 1.0, <2.0.0 |
+| <a name="provider_infoblox"></a> [infoblox](#provider\_infoblox) | >= 1.0, <2.0.0 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [infoblox_a_record.a_record](https://registry.terraform.io/providers/infobloxopen/infoblox/latest/docs/resources/a_record) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| enabled | Enable this resource? This can go away with terraform v0.13 | `bool` | `true` | no |
-| infoblox\_host | Infoblox host | `string` | n/a | yes |
-| infoblox\_password | Password to authenticate with Infoblox server | `string` | n/a | yes |
-| infoblox\_username | Username to authenticate with Infoblox server | `string` | n/a | yes |
-| record\_dns\_view | DNS View under which the zone has been created. | `string` | n/a | yes |
-| record\_domain | The domain on the record. hostaname.domain = FQDN | `string` | n/a | yes |
-| record\_hostname | The domain on the record. hostaname.domain = FQDN | `string` | n/a | yes |
-| record\_ip | Static IP for the a-record | `string` | n/a | yes |
-| ssl\_mode | Use SSL when connecting to infoblox server | `bool` | `false` | no |
+| <a name="input_enabled"></a> [enabled](#input\_enabled) | Enable this resource? This can go away with terraform v0.13 | `bool` | `true` | no |
+| <a name="input_infoblox_host"></a> [infoblox\_host](#input\_infoblox\_host) | Infoblox host | `string` | n/a | yes |
+| <a name="input_infoblox_password"></a> [infoblox\_password](#input\_infoblox\_password) | Password to authenticate with Infoblox server | `string` | n/a | yes |
+| <a name="input_infoblox_username"></a> [infoblox\_username](#input\_infoblox\_username) | Username to authenticate with Infoblox server | `string` | n/a | yes |
+| <a name="input_record_dns_view"></a> [record\_dns\_view](#input\_record\_dns\_view) | DNS View under which the zone has been created. | `string` | n/a | yes |
+| <a name="input_record_domain"></a> [record\_domain](#input\_record\_domain) | The domain on the record. hostaname.domain = FQDN | `string` | n/a | yes |
+| <a name="input_record_hostname"></a> [record\_hostname](#input\_record\_hostname) | The domain on the record. hostaname.domain = FQDN | `string` | n/a | yes |
+| <a name="input_record_ip"></a> [record\_ip](#input\_record\_ip) | Static IP for the a-record | `string` | n/a | yes |
+| <a name="input_ssl_mode"></a> [ssl\_mode](#input\_ssl\_mode) | Use SSL when connecting to infoblox server | `bool` | `false` | no |
 
 ## Outputs
 
-No output.
-
+No outputs.
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 
