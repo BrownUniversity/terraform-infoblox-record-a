@@ -5,8 +5,29 @@ on: [workflow_dispatch]
 jobs:
   docker:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
     steps:
       - uses: actions/checkout@v2
+
+      - uses: dorny/paths-filter@v2.2.0
+        id: filter
+        with:
+          base: ${{ github.ref }}
+          filter: |
+            all:
+              - '.github/workflows/kitchen-tests.yml'
+              - 'Dockerfile'
+              - 'Gemfile*'
+
+      - name: Build Image
+        if: steps.filter.outputs.all == 'true' && !contains(github.event.commits[0].message, '[skip docker]')
+        run: docker build . --file Dockerfile --tag "${{ github.event.repository.name }}" --label "runnumber=${GITHUB_RUN_ID}"
+
+      - name: Log into registry
+        if: steps.filter.outputs.all ==
       - name: Build and Push to Docker Hub
         uses: docker/build-push-action@v1
         with:
@@ -42,12 +63,12 @@ jobs:
       run: rm -rf examples/production-record/terraform.tfstate.d
     - name: Post-check dirty dirs in self-hosted
       run: |
-        ls -la 
+        ls -la
         ls -la examples/production-record/
 
   docker-cleanup:
     needs: [test]
-    runs-on: self-hosted 
+    runs-on: self-hosted
     steps:
     - name: Clean up docker images
       run: |
