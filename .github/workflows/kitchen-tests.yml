@@ -32,7 +32,7 @@ jobs:
 
       - name: Push image to gh packages
         id: upload
-        if: steps.filter.outputs.all == 'true' && !contains(github.event.commits[0].message, '[skip docker]'')
+        if: steps.filter.outputs.all == 'true' && !contains(github.event.commits[0].message, '[skip docker]')
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
           # Change all uppercase to lowercase
