@@ -16,7 +16,7 @@ jobs:
         id: filter
         with:
           base: ${{ github.ref }}
-          filter: |
+          filters: |
             all:
               - '.github/workflows/kitchen-tests.yml'
               - 'Dockerfile'
