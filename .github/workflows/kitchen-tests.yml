@@ -45,7 +45,7 @@ jobs:
 
   production-record:
     needs: [docker]
-    if: "!contains(github.event.commits[0].message '[skip ci]')"
+    if: "!contains(github.event.commits[0].message, '[skip ci]')"
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/brownuniversity/terraform-infoblox-a-record:latest
