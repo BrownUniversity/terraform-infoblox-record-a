@@ -27,52 +27,47 @@ jobs:
         run: docker build . --file Dockerfile --tag "${{ github.event.repository.name }}" --label "runnumber=${GITHUB_RUN_ID}"
 
       - name: Log into registry
-        if: steps.filter.outputs.all ==
-      - name: Build and Push to Docker Hub
-        uses: docker/build-push-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
-          repository: brownccv/kitchen-terraform
-          tags: infoblox-record-a
+        if: steps.filter.outputs.all == 'true' && !contains(github.event.commits[0].message, '[skip docker]'')
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-  test:
+      - name: Push image to gh packages
+        id: upload
+        if: steps.filter.outputs.all == 'true' && !contains(github.event.commits[0].message, '[skip docker'])
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=latest
+          echo VERSION=$VERSION
+          echo IMAGE_ID=$IMAGE_ID
+          docker tag ${{ github.event.repository.name }} $IMAGE_ID:${VERSION}
+          docker push $IMAGE_ID:$VERSION
+
+  production-record:
     needs: [docker]
-    runs-on: self-hosted
-    container: brownccv/kitchen-terraform:infoblox-record-a
+    if: "!contains(github.event.commits[0].message '[skip ci]')"
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/brownuniversity/terraform-infoblox-a-record:latest
     steps:
     - uses: actions/checkout@v2
-      with:
-        clean: false
-    - name: Remove Kitchen File
-      run: rm -rf .kitchen
-    - name: Remove Terraform Folder
-      run: rm -rf examples/production-record/.terraform
-    - name: Remove Terraform File
-      run: rm -rf examples/production-record/terraform.tfstate.d
     - name: Run Kitchen
-      run: kitchen test
+      run: kitchen test production-record
       env:
-        TF_VAR_infoblox_username: ${{ secrets.INFOBLOX_JHUB_USER }}
-        TF_VAR_infoblox_password: ${{ secrets.INFOBLOX_JHUB_PSWD }}
-    - name: Remove Kitchen File
-      run: rm -rf .kitchen
-    - name: Remove Terraform Folder
-      run: rm -rf examples/production-record/.terraform
-    - name: Remove Terraform File
-      run: rm -rf examples/production-record/terraform.tfstate.d
-    - name: Post-check dirty dirs in self-hosted
-      run: |
-        ls -la
-        ls -la examples/production-record/
+          TF_VAR_github_organization: BrownUniversity
+          TF_VAR_github_token: ${{ secrets.GH_token }}
+          TF_VAR_INFOBLOX_USERNAME: ${{ secrets.INFOBLOX_JHUB_USER}}
+          TF_VAR_INFOBLOX_PASSWORD: ${{ secrets.INFOBLOX_JHUB_USER}}
+          TF_VAR_INFOBLOX_SERVER: ${{ secrets.INFOBLOX_SERVER }}
+
 
   docker-cleanup:
-    needs: [test]
+    needs: [production-record]
     runs-on: self-hosted
     steps:
     - name: Clean up docker images
       run: |
-        docker images --filter=reference='brownccv/kitchen-terraform'
-        docker images --filter=reference='brownccv/kitchen-terraform' --filter "dangling=true" | grep -E "brownccv/kitchen-terraform" | awk '{ print $3 }' | xargs docker rmi || :
+        docker images --filter=reference='brownuniversity/terraform-infoblox-a-record'
+        docker images --filter=reference='brownuniversity/terraform-infoblox-a-record' --filter "dangling=true" | grep -E "brownuniversity/terraform-infoblox-a-record" | awk '{ print $3 }' | xargs docker rmi || :
         echo "After cleanup"
-        docker images --filter=reference='brownccv/kitchen-terraform'
+        docker images --filter=reference='brownuniversity/terraform-infoblox-a-record'

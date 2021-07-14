@@ -57,9 +57,6 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Enable this resource? This can go away with terraform v0.13 | `bool` | `true` | no |
-| <a name="input_infoblox_host"></a> [infoblox\_host](#input\_infoblox\_host) | Infoblox host | `string` | n/a | yes |
-| <a name="input_infoblox_password"></a> [infoblox\_password](#input\_infoblox\_password) | Password to authenticate with Infoblox server | `string` | n/a | yes |
-| <a name="input_infoblox_username"></a> [infoblox\_username](#input\_infoblox\_username) | Username to authenticate with Infoblox server | `string` | n/a | yes |
 | <a name="input_record_dns_view"></a> [record\_dns\_view](#input\_record\_dns\_view) | DNS View under which the zone has been created. | `string` | n/a | yes |
 | <a name="input_record_domain"></a> [record\_domain](#input\_record\_domain) | The domain on the record. hostaname.domain = FQDN | `string` | n/a | yes |
 | <a name="input_record_hostname"></a> [record\_hostname](#input\_record\_hostname) | The domain on the record. hostaname.domain = FQDN | `string` | n/a | yes |
