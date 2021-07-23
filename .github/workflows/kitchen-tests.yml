@@ -35,7 +35,7 @@ jobs:
     if: "!contains(github.event.commits[0].message, '[skip ci]')"
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/brownuniversity/terraform-infoblox-a-record:latest
+      image: ghcr.io/brownuniversity/terraform-infoblox-record-a:latest
     steps:
     - uses: actions/checkout@v2
     - name: Run Kitchen
@@ -54,7 +54,7 @@ jobs:
     steps:
     - name: Clean up docker images
       run: |
-        docker images --filter=reference='brownuniversity/terraform-infoblox-a-record'
-        docker images --filter=reference='brownuniversity/terraform-infoblox-a-record' --filter "dangling=true" | grep -E "brownuniversity/terraform-infoblox-a-record" | awk '{ print $3 }' | xargs docker rmi || :
+        docker images --filter=reference='brownuniversity/terraform-infoblox-record-a'
+        docker images --filter=reference='brownuniversity/terraform-infoblox-record-a' --filter "dangling=true" | grep -E "brownuniversity/terraform-infoblox-record-a" | awk '{ print $3 }' | xargs docker rmi || :
         echo "After cleanup"
-        docker images --filter=reference='brownuniversity/terraform-infoblox-a-record'
+        docker images --filter=reference='brownuniversity/terraform-infoblox-record-a'
