@@ -21,7 +21,30 @@ The example includes typical values used at Brown University
 
 ## Getting Started
 
-You will need Infobox credentials and permission of the specified zone and view. The Infoblox server must also be reachable within your network
+If developing locally, this module depends on you having GCP credentials of some kind. The module looks for a credential file in JSON format. You should export the following:
+
+```
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/file.json
+```
+If the credentials are set correctly, the basic gcloud infrastructure is successfully created
+
+You will also need Infobox credentials and permission of the specified zone and view. The Infoblox server must also be reachable within your network.
+For Brown users we recommend using `lastpass-cli` to source your secrets into environment variables (ask for access to creds)., ie
+
+```
+export INFOBLOX_USERNAME=$(lpass show infoblox --username)
+export INFOBLOX_PASSWORD=$(lpass show infoblox --password)
+export INFOBLOX_SERVER=$(lpass show infoblox --url | awk -F/ '{print $3}')
+```
+
+The following envs are required
+
+```
+INFOBLOX_USERNAME
+INFORBOX_PASSWORD
+INFOBLOX_SERVER
+```
+
 
 ## How do you use this module?
 
