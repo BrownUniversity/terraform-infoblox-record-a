@@ -41,7 +41,7 @@ The following envs are required
 
 ```
 INFOBLOX_USERNAME
-INFORBOX_PASSWORD
+INFOBLOX_PASSWORD
 INFOBLOX_SERVER
 ```
 

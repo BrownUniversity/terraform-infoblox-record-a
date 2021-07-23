@@ -44,7 +44,7 @@ jobs:
           TF_VAR_github_organization: BrownUniversity
           TF_VAR_github_token: ${{ secrets.GH_token }}
           INFOBLOX_USERNAME: ${{ secrets.INFOBLOX_JHUB_USER}}
-          INFOBLOX_PASSWORD: ${{ secrets.INFOBLOX_JHUB_PASSWORD}}
+          INFOBLOX_PASSWORD: ${{ secrets.INFOBLOX_JHUB_PSWD}}
           INFOBLOX_SERVER: ${{ secrets.INFOBLOX_SERVER }}
 
 
