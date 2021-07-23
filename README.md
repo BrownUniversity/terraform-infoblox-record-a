@@ -143,3 +143,26 @@ This project has three workflows enabled:
     * Kitchen tests
     * Clean up dangling images on self-hosteds
 
+### Maintenance/Upgrades
+
+We aim to upgrade this package at least once a year.
+
+#### Update Ruby Version
+To install/upgrade the version of Ruby we use `rbenv`. For instance to install and update to `2.7.3`:
+
+```
+rbenv install -v 2.7.3
+rbenv local 2.7.3
+```
+
+This will update the `.ruby-version` file if necessary
+
+#### Gemfile
+
+Look at the Gemfile and the output of `bundle outdated` to decide what to update. Usually I update the versions in the Gemfile directly, then type `bundle update`
+
+### Update the version of Terraform
+
+Use `tfenv` to manage your versions of terraform. You can update the version in the `.terraform-version` file and run `tfenv install` and `tf use` to install and use the version specified in the file.
+
+You should also update the version of terraform specified in the `versions.tf` file
