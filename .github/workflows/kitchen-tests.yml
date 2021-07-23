@@ -1,6 +1,6 @@
 name: kitchen-tests
 
-on: [workflow_dispatch]
+on: [push, workflow_dispatch]
 
 jobs:
   docker:
@@ -12,27 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: dorny/paths-filter@v2.2.0
-        id: filter
-        with:
-          base: ${{ github.ref }}
-          filters: |
-            all:
-              - '.github/workflows/kitchen-tests.yml'
-              - 'Dockerfile'
-              - 'Gemfile*'
-
       - name: Build Image
-        if: steps.filter.outputs.all == 'true' && !contains(github.event.commits[0].message, '[skip docker]')
         run: docker build . --file Dockerfile --tag "${{ github.event.repository.name }}" --label "runnumber=${GITHUB_RUN_ID}"
 
       - name: Log into registry
-        if: steps.filter.outputs.all == 'true' && !contains(github.event.commits[0].message, '[skip docker]')
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Push image to gh packages
         id: upload
-        if: steps.filter.outputs.all == 'true' && !contains(github.event.commits[0].message, '[skip docker]')
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
           # Change all uppercase to lowercase
@@ -57,7 +44,7 @@ jobs:
           TF_VAR_github_organization: BrownUniversity
           TF_VAR_github_token: ${{ secrets.GH_token }}
           INFOBLOX_USERNAME: ${{ secrets.INFOBLOX_JHUB_USER}}
-          INFOBLOX_PASSWORD: ${{ secrets.INFOBLOX_JHUB_USER}}
+          INFOBLOX_PASSWORD: ${{ secrets.INFOBLOX_JHUB_PASSWORD}}
           INFOBLOX_SERVER: ${{ secrets.INFOBLOX_SERVER }}
 
 
