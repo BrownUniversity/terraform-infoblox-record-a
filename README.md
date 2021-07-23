@@ -165,4 +165,4 @@ Look at the Gemfile and the output of `bundle outdated` to decide what to update
 
 Use `tfenv` to manage your versions of terraform. You can update the version in the `.terraform-version` file and run `tfenv install` and `tf use` to install and use the version specified in the file.
 
-You should also update the version of terraform specified in the `versions.tf` file
+You should also update the version of terraform specified in the `versions.tf` file.
