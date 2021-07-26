@@ -135,7 +135,7 @@ This project has three workflows enabled:
 
 1. PR labeler: When openning a PR to default branch, a label is given automatically according to the name of your feature branch. The labeler follows thenrules in [pr-labeler.yml](.github/pr-labeler.yml)
 
-2. Release Drafter: When merging to master, a release is drafted using the [Release-Drafter Action](https://github.com/marketplace/actions/release-drafter)
+2. Release Drafter: When merging to main, a release is drafted using the [Release-Drafter Action](https://github.com/marketplace/actions/release-drafter)
 
 3. Kitchen test: ⚠️This workflow runs on a self-hosted runner baceuse `infoblox` is behind our network. For scurity reasons it only runs on a manual dispatch so that the self-hosted runner is not exposed to outside PRs. In the self hosted runner there are important considarations about cleanning up files and dangling docker images. Also to avoid permission errors due to the container action writing files as ROOT, cleaning prior to checkout has been disabled. contains three jobs:
     
