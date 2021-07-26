@@ -1,6 +1,11 @@
 name: kitchen-tests
 
-on: [push, workflow_dispatch]
+on: 
+  push:
+    branches:
+      - master
+  pull_request:
+
 
 jobs:
   docker:
