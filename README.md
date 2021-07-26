@@ -21,7 +21,30 @@ The example includes typical values used at Brown University
 
 ## Getting Started
 
-You will need Infobox credentials and permission of the specified zone and view. The Infoblox server must also be reachable within your network
+If developing locally, this module depends on you having GCP credentials of some kind. The module looks for a credential file in JSON format. You should export the following:
+
+```
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/file.json
+```
+If the credentials are set correctly, the basic gcloud infrastructure is successfully created
+
+You will also need Infobox credentials and permission of the specified zone and view. The Infoblox server must also be reachable within your network.
+For Brown users we recommend using `lastpass-cli` to source your secrets into environment variables (ask for access to creds)., ie
+
+```
+export INFOBLOX_USERNAME=$(lpass show infoblox --username)
+export INFOBLOX_PASSWORD=$(lpass show infoblox --password)
+export INFOBLOX_SERVER=$(lpass show infoblox --url | awk -F/ '{print $3}')
+```
+
+The following envs are required
+
+```
+INFOBLOX_USERNAME
+INFOBLOX_PASSWORD
+INFOBLOX_SERVER
+```
+
 
 ## How do you use this module?
 
@@ -33,34 +56,39 @@ code by adding a `module` configuration and setting its `source` parameter to UR
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12 |
-| infoblox | v1.0.0 |
-| infoblox | >= 1.0, <2.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
+| <a name="requirement_infoblox"></a> [infoblox](#requirement\_infoblox) | >= 1.0, <2.0.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| infoblox | v1.0.0 >= 1.0, <2.0.0 |
+| <a name="provider_infoblox"></a> [infoblox](#provider\_infoblox) | >= 1.0, <2.0.0 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [infoblox_a_record.a_record](https://registry.terraform.io/providers/infobloxopen/infoblox/latest/docs/resources/a_record) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| enabled | Enable this resource? This can go away with terraform v0.13 | `bool` | `true` | no |
-| infoblox\_host | Infoblox host | `string` | n/a | yes |
-| infoblox\_password | Password to authenticate with Infoblox server | `string` | n/a | yes |
-| infoblox\_username | Username to authenticate with Infoblox server | `string` | n/a | yes |
-| record\_dns\_view | DNS View under which the zone has been created. | `string` | n/a | yes |
-| record\_domain | The domain on the record. hostaname.domain = FQDN | `string` | n/a | yes |
-| record\_hostname | The domain on the record. hostaname.domain = FQDN | `string` | n/a | yes |
-| record\_ip | Static IP for the a-record | `string` | n/a | yes |
-| ssl\_mode | Use SSL when connecting to infoblox server | `bool` | `false` | no |
+| <a name="input_enabled"></a> [enabled](#input\_enabled) | Enable this resource? This can go away with terraform v0.13 | `bool` | `true` | no |
+| <a name="input_record_dns_view"></a> [record\_dns\_view](#input\_record\_dns\_view) | DNS View under which the zone has been created. | `string` | n/a | yes |
+| <a name="input_record_domain"></a> [record\_domain](#input\_record\_domain) | The domain on the record. hostaname.domain = FQDN | `string` | n/a | yes |
+| <a name="input_record_hostname"></a> [record\_hostname](#input\_record\_hostname) | The domain on the record. hostaname.domain = FQDN | `string` | n/a | yes |
+| <a name="input_record_ip"></a> [record\_ip](#input\_record\_ip) | Static IP for the a-record | `string` | n/a | yes |
+| <a name="input_ssl_mode"></a> [ssl\_mode](#input\_ssl\_mode) | Use SSL when connecting to infoblox server | `bool` | `false` | no |
 
 ## Outputs
 
-No output.
-
+No outputs.
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 
@@ -115,3 +143,26 @@ This project has three workflows enabled:
     * Kitchen tests
     * Clean up dangling images on self-hosteds
 
+### Maintenance/Upgrades
+
+We aim to upgrade this package at least once a year.
+
+#### Update Ruby Version
+To install/upgrade the version of Ruby we use `rbenv`. For instance to install and update to `2.7.3`:
+
+```
+rbenv install -v 2.7.3
+rbenv local 2.7.3
+```
+
+This will update the `.ruby-version` file if necessary
+
+#### Gemfile
+
+Look at the Gemfile and the output of `bundle outdated` to decide what to update. Usually I update the versions in the Gemfile directly, then type `bundle update`
+
+### Update the version of Terraform
+
+Use `tfenv` to manage your versions of terraform. You can update the version in the `.terraform-version` file and run `tfenv install` and `tf use` to install and use the version specified in the file.
+
+You should also update the version of terraform specified in the `versions.tf` file.
