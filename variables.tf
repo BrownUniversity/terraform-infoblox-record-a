@@ -22,12 +22,6 @@ variable "record_dns_view" {
 
 # Optional Variables
 
-variable "enabled" {
-  description = "Enable this resource? This can go away with terraform v0.13"
-  type        = bool
-  default     = true
-}
-
 variable "ssl_mode" {
   description = "Use SSL when connecting to infoblox server"
   type        = bool

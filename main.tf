@@ -10,7 +10,6 @@ locals {
 }
 
 resource "infoblox_a_record" "a_record" {
-  count    = var.enabled ? 1 : 0
   fqdn     = local.fqdn
   ip_addr  = var.record_ip
   ttl      = var.ttl
