@@ -1,9 +1,9 @@
 title "Test creation of an a-record"
 
-ip_address = attribute("record_ip")
-fqdn = attribute("record_fqdn")
+ip_address = attribute("ip_address")
+fqdn = attribute("fqdn")
 
-describe nslookup(fqdn) do
+describe host(fqdn) do
   it { should be_resolvable }
-  its('stdout') { should include ip_address}
+  its('ipaddress') { should include ip_address}
 end
