@@ -23,5 +23,4 @@ RUN gem install bundler && \
     bundle config set system 'true' && \
     bundle install
 
-
 ENTRYPOINT ["/bin/bash"]
