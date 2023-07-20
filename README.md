@@ -56,14 +56,14 @@ code by adding a `module` configuration and setting its `source` parameter to UR
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-| <a name="requirement_infoblox"></a> [infoblox](#requirement\_infoblox) | >= 1.0, <2.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0 |
+| <a name="requirement_infoblox"></a> [infoblox](#requirement\_infoblox) | 2.1.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_infoblox"></a> [infoblox](#provider\_infoblox) | >= 1.0, <2.0.0 |
+| <a name="provider_infoblox"></a> [infoblox](#provider\_infoblox) | 2.1.0 |
 
 ## Modules
 
@@ -73,22 +73,29 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [infoblox_a_record.a_record](https://registry.terraform.io/providers/infobloxopen/infoblox/latest/docs/resources/a_record) | resource |
+| [infoblox_a_record.a_record](https://registry.terraform.io/providers/infobloxopen/infoblox/2.1.0/docs/resources/a_record) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_enabled"></a> [enabled](#input\_enabled) | Enable this resource? This can go away with terraform v0.13 | `bool` | `true` | no |
-| <a name="input_record_dns_view"></a> [record\_dns\_view](#input\_record\_dns\_view) | DNS View under which the zone has been created. | `string` | n/a | yes |
-| <a name="input_record_domain"></a> [record\_domain](#input\_record\_domain) | The domain on the record. hostaname.domain = FQDN | `string` | n/a | yes |
-| <a name="input_record_hostname"></a> [record\_hostname](#input\_record\_hostname) | The domain on the record. hostaname.domain = FQDN | `string` | n/a | yes |
+| <a name="input_ext_attrs"></a> [ext\_attrs](#input\_ext\_attrs) | Any additional extensible attributes to set on the DNS object. Note that Tenant ID EA is already set in the module and gets merged with this value | `map(string)` | `{}` | no |
+| <a name="input_network_view"></a> [network\_view](#input\_network\_view) | Used to specify the Infoblox network view to use when allocating an IP dynamically. Do not use this field unless you really know your use case | `string` | `null` | no |
+| <a name="input_record_dns_view"></a> [record\_dns\_view](#input\_record\_dns\_view) | DNS View that contains the zone that the record is being created in. | `string` | n/a | yes |
+| <a name="input_record_domain"></a> [record\_domain](#input\_record\_domain) | The domain on portion of the FQDN. hostname.DOMAIN = FQDN | `string` | n/a | yes |
+| <a name="input_record_hostname"></a> [record\_hostname](#input\_record\_hostname) | The hostname portion of the FQDN. HOSTNAME.domain = FQDN | `string` | n/a | yes |
 | <a name="input_record_ip"></a> [record\_ip](#input\_record\_ip) | Static IP for the a-record | `string` | n/a | yes |
 | <a name="input_ssl_mode"></a> [ssl\_mode](#input\_ssl\_mode) | Use SSL when connecting to infoblox server | `bool` | `false` | no |
+| <a name="input_ttl"></a> [ttl](#input\_ttl) | TTL value in seconds for the record. 0 disables caching. Lower values increase network traffic, High values can cause outages in case of sudden backing IP changes | `number` | `3600` | no |
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_extended_attributes"></a> [extended\_attributes](#output\_extended\_attributes) | The EAs created for the object |
+| <a name="output_fqdn"></a> [fqdn](#output\_fqdn) | The fully-qualified domain name of the A record created |
+| <a name="output_id"></a> [id](#output\_id) | ID of provisioned infoblox resource |
+| <a name="output_ip_address"></a> [ip\_address](#output\_ip\_address) | The IP address associated with the A record |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 

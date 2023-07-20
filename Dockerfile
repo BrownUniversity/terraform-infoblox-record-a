@@ -1,4 +1,4 @@
-FROM hashicorp/terraform:1.2.5
+FROM hashicorp/terraform:1.5.0
 
 COPY .ruby-version .ruby-version
 
@@ -22,6 +22,5 @@ COPY Gemfile* ./
 RUN gem install bundler && \
     bundle config set system 'true' && \
     bundle install
-
 
 ENTRYPOINT ["/bin/bash"]
