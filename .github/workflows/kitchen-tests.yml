@@ -1,39 +1,82 @@
 name: kitchen-tests
 
-on: 
+on:
   push:
     branches:
-      - main
+      - "main"
+    tags:
+      - "v*.*.*"
   pull_request:
+    branches:
+      - "main"
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: brownuniversity/terraform-gcp-infoblox-a
 
 jobs:
   docker:
     runs-on: ubuntu-latest
+
     permissions:
       packages: write
       contents: read
 
+    outputs:
+      full_image_id: ${{ steps.save_full_image_id.outputs.full_image_id }}
+
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Build Image
-        run: docker build . --file Dockerfile --tag "${{ github.event.repository.name }}" --label "runnumber=${GITHUB_RUN_ID}"
+      - uses: dorny/paths-filter@v2.2.0
+        id: filter
+        with:
+          base: ${{ github.ref }}
+          filters: |
+            all:
+              - '.github/workflows/kitchen-tests.yml'
+              - 'Dockerfile'
+              - 'Gemfile*'
 
-      - name: Log into registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
 
-      - name: Push image to gh packages
-        id: upload
-        run: |
-          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
-          # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          VERSION=latest
-          echo VERSION=$VERSION
-          echo IMAGE_ID=$IMAGE_ID
-          docker tag ${{ github.event.repository.name }} $IMAGE_ID:${VERSION}
-          docker push $IMAGE_ID:$VERSION
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{major}}.{{minor}}
+
+      # NOTE: We are tapping into json output because tags could become a list if prior step is modified
+      - id: save_full_image_id
+        run: echo "full_image_id=${{ fromJSON(steps.meta.outputs.json).tags[0] }}" >> $GITHUB_OUTPUT
+
+      - name: print_tag
+        run: echo "${{ fromJSON(steps.meta.outputs.json).tags[0] }}"
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache
 
   production-record:
     needs: [docker]
@@ -41,24 +84,23 @@ jobs:
     container:
       image: ghcr.io/brownuniversity/terraform-infoblox-record-a:latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Run Kitchen
-      run: kitchen test production-record
-      env:
+      - uses: actions/checkout@v3
+      - name: Run Kitchen
+        run: kitchen test production-record
+        env:
           TF_VAR_github_organization: BrownUniversity
           TF_VAR_github_token: ${{ secrets.GH_token }}
           INFOBLOX_USERNAME: ${{ secrets.INFOBLOX_JHUB_USER}}
           INFOBLOX_PASSWORD: ${{ secrets.INFOBLOX_JHUB_PSWD}}
           INFOBLOX_SERVER: ${{ secrets.INFOBLOX_JHUB_HOST }}
 
-
   docker-cleanup:
     needs: [production-record]
     runs-on: self-hosted
     steps:
-    - name: Clean up docker images
-      run: |
-        docker images --filter=reference='brownuniversity/terraform-infoblox-record-a'
-        docker images --filter=reference='brownuniversity/terraform-infoblox-record-a' --filter "dangling=true" | grep -E "brownuniversity/terraform-infoblox-record-a" | awk '{ print $3 }' | xargs docker rmi || :
-        echo "After cleanup"
-        docker images --filter=reference='brownuniversity/terraform-infoblox-record-a'
+      - name: Clean up docker images
+        run: |
+          docker images --filter=reference='brownuniversity/terraform-infoblox-record-a'
+          docker images --filter=reference='brownuniversity/terraform-infoblox-record-a' --filter "dangling=true" | grep -E "brownuniversity/terraform-infoblox-record-a" | awk '{ print $3 }' | xargs docker rmi || :
+          echo "After cleanup"
+          docker images --filter=reference='brownuniversity/terraform-infoblox-record-a'
