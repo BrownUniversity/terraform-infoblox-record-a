@@ -17,3 +17,7 @@ output "extended_attributes" {
   description = "The EAs created for the object"
   value       = infoblox_a_record.a_record.ext_attrs
 }
+
+output "network_view" {
+  value = infoblox_a_record.a_record.dns_view
+}
