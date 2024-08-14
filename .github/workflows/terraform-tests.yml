@@ -13,14 +13,14 @@ jobs:
       image: ghcr.io/brownuniversity/terraform-infoblox-record-a:latest
     steps:
     - uses: actions/checkout@v4
-    - name: Run terraform test
-      run: |
-        terraform init
-        terraform test
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
       with:
           terraform_version: 1.9.2
+    - name: Run terraform test
+      run: |
+        terraform init
+        terraform test
       env:
         INFOBLOX_HOST: ${{ secrets.INFOBLOX_JHUB_HOST }}
         INFOBLOX_USERNAME: ${{ secrets.INFOBLOX_JHUB_USER }}
