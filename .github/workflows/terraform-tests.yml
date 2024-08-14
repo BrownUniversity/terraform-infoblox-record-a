@@ -1,0 +1,27 @@
+name: terraform-tests
+
+on:
+  push:
+    branches:
+      - "main"
+    tags:
+      - "v*.*.*"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  terraform-tests:
+    runs-on: self-hosted
+    container:
+      image: hashicorp/terraform:1.9
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run terraform test
+        run: |
+          terraform init
+          terraform test
+        env:
+          INFOBLOX_SERVER: ${{ secrets.INFOBLOX_JHUB_HOST }}
+          INFOBLOX_USERNAME: ${{ secrets.INFOBLOX_JHUB_USER }}
+          INFOBLOX_PASSWORD: ${{ secrets.INFOBLOX_JHUB_PSWD }}

@@ -17,3 +17,11 @@ output "extended_attributes" {
   description = "The EAs created for the object"
   value       = module.production_infoblox_record.extended_attributes
 }
+
+output "record_domain" {
+  value = trimprefix(module.production_infoblox_record.fqdn, trimsuffix(module.production_infoblox_record.fqdn, ".${var.record_domain}"))
+}
+
+output "view" {
+  value = module.production_infoblox_record.network_view
+}

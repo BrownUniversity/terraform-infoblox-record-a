@@ -10,10 +10,11 @@ locals {
 }
 
 resource "infoblox_a_record" "a_record" {
-  fqdn     = local.fqdn
-  ip_addr  = var.record_ip
-  ttl      = var.ttl
-  dns_view = var.record_dns_view
+  fqdn         = local.fqdn
+  ip_addr      = var.record_ip
+  ttl          = var.ttl
+  dns_view     = var.record_dns_view
+  network_view = var.network_view
   ext_attrs = jsonencode(
     merge(
       { "Tenant ID" = var.record_hostname },
