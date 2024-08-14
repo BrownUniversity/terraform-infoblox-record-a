@@ -1,11 +1,10 @@
-name: kitchen-tests
+name: terraform-tests
 
 on: 
   push:
     branches:
       - main
   pull_request:
-
 
 jobs:
   docker:
@@ -23,7 +22,7 @@ jobs:
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Push image to gh packages
+      - name: Push image tor gh packages
         id: upload
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
@@ -35,25 +34,24 @@ jobs:
           docker tag ${{ github.event.repository.name }} $IMAGE_ID:${VERSION}
           docker push $IMAGE_ID:$VERSION
 
-  production-record:
+  terraform-tests:
     needs: [docker]
     runs-on: self-hosted
     container:
       image: ghcr.io/brownuniversity/terraform-infoblox-record-a:latest
     steps:
     - uses: actions/checkout@v2
-    - name: Run Kitchen
-      run: kitchen test production-record
+    - name: Run terraform test
+      run: |
+        terraform init
+        terraform test
       env:
-          TF_VAR_github_organization: BrownUniversity
-          TF_VAR_github_token: ${{ secrets.GH_token }}
-          INFOBLOX_USERNAME: ${{ secrets.INFOBLOX_JHUB_USER}}
-          INFOBLOX_PASSWORD: ${{ secrets.INFOBLOX_JHUB_PSWD}}
-          INFOBLOX_SERVER: ${{ secrets.INFOBLOX_JHUB_HOST }}
-
+        INFOBLOX_HOST: ${{ secrets.INFOBLOX_JHUB_HOST }}
+        INFOBLOX_USERNAME: ${{ secrets.INFOBLOX_JHUB_USER }}
+        INFOBLOX_PASSWORD: ${{ secrets.INFOBLOX_JHUB_PSWD }}
 
   docker-cleanup:
-    needs: [production-record]
+    needs: [terraform-tests]
     runs-on: self-hosted
     steps:
     - name: Clean up docker images

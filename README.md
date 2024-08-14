@@ -56,8 +56,8 @@ code by adding a `module` configuration and setting its `source` parameter to UR
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0 |
-| <a name="requirement_infoblox"></a> [infoblox](#requirement\_infoblox) | 2.1.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
+| <a name="requirement_infoblox"></a> [infoblox](#requirement\_infoblox) |  = 2.1 |
 
 ## Providers
 
@@ -73,7 +73,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [infoblox_a_record.a_record](https://registry.terraform.io/providers/infobloxopen/infoblox/2.1.0/docs/resources/a_record) | resource |
+| [infoblox_a_record.a_record](https://registry.terraform.io/providers/infobloxopen/infoblox/latest/docs/resources/a_record) | resource |
 
 ## Inputs
 
@@ -96,6 +96,7 @@ No modules.
 | <a name="output_fqdn"></a> [fqdn](#output\_fqdn) | The fully-qualified domain name of the A record created |
 | <a name="output_id"></a> [id](#output\_id) | ID of provisioned infoblox resource |
 | <a name="output_ip_address"></a> [ip\_address](#output\_ip\_address) | The IP address associated with the A record |
+| <a name="output_network_view"></a> [network\_view](#output\_network\_view) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 

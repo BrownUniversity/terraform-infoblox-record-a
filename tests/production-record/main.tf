@@ -1,8 +1,14 @@
-locals {
-  record_ip       = "127.0.0.1"
-  record_hostname = "inspec"
-  record_domain   = "jupyter.brown.edu"
+terraform {
+  required_version = "1.9.0"
+  required_providers {
+    random = {
+      source  = "hashicorp/random"
+      version = "3.6.2"
+    }
+  }
 }
+
+
 
 resource "random_string" "random" {
   length  = 4
@@ -18,18 +24,22 @@ module "production_infoblox_record" {
 }
 
 variable "record_hostname" {
+  type    = string
   default = "inspec"
 }
 
 variable "record_domain" {
+  type    = string
   default = "jupyter.brown.edu"
 }
 
 variable "record_ip" {
+  type    = string
   default = "127.0.0.1"
 }
 
 variable "record_dns_view" {
+  type    = string
   default = "production"
 }
 
