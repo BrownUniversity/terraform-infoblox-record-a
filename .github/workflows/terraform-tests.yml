@@ -22,6 +22,6 @@ jobs:
           terraform init
           terraform test
         env:
-          INFOBLOX_HOST: ${{ secrets.INFOBLOX_JHUB_HOST }}
+          INFOBLOX_SERVER: ${{ secrets.INFOBLOX_JHUB_HOST }}
           INFOBLOX_USERNAME: ${{ secrets.INFOBLOX_JHUB_USER }}
           INFOBLOX_PASSWORD: ${{ secrets.INFOBLOX_JHUB_PSWD }}
