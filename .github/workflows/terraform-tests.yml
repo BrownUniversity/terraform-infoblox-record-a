@@ -1,27 +1,31 @@
 name: terraform-tests
 
-on: 
+on:
   push:
     branches:
-      - main
+      - "main"
+    tags:
+      - "v*.*.*"
   pull_request:
+    branches:
+      - "main"
 
 jobs:
   terraform-tests:
     runs-on: self-hosted
     container:
-      image: ghcr.io/brownuniversity/terraform-infoblox-record-a:latest
+      image: ubuntu:latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
-      with:
+      - uses: actions/checkout@v4
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
           terraform_version: 1.9.2
-    - name: Run terraform test
-      run: |
-        terraform init
-        terraform test
-      env:
-        INFOBLOX_HOST: ${{ secrets.INFOBLOX_JHUB_HOST }}
-        INFOBLOX_USERNAME: ${{ secrets.INFOBLOX_JHUB_USER }}
-        INFOBLOX_PASSWORD: ${{ secrets.INFOBLOX_JHUB_PSWD }}
+      - name: Run terraform test
+        run: |
+          terraform init
+          terraform test
+        env:
+          INFOBLOX_HOST: ${{ secrets.INFOBLOX_JHUB_HOST }}
+          INFOBLOX_USERNAME: ${{ secrets.INFOBLOX_JHUB_USER }}
+          INFOBLOX_PASSWORD: ${{ secrets.INFOBLOX_JHUB_PSWD }}
