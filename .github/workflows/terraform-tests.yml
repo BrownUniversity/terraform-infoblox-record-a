@@ -7,56 +7,21 @@ on:
   pull_request:
 
 jobs:
-  docker:
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Build Image
-        run: docker build . --file Dockerfile --tag "${{ github.event.repository.name }}" --label "runnumber=${GITHUB_RUN_ID}"
-
-      - name: Log into registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-      - name: Push image tor gh packages
-        id: upload
-        run: |
-          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
-          # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          VERSION=latest
-          echo VERSION=$VERSION
-          echo IMAGE_ID=$IMAGE_ID
-          docker tag ${{ github.event.repository.name }} $IMAGE_ID:${VERSION}
-          docker push $IMAGE_ID:$VERSION
-
   terraform-tests:
-    needs: [docker]
     runs-on: self-hosted
     container:
       image: ghcr.io/brownuniversity/terraform-infoblox-record-a:latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Run terraform test
       run: |
         terraform init
         terraform test
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+          terraform_version: 1.9.2
       env:
         INFOBLOX_HOST: ${{ secrets.INFOBLOX_JHUB_HOST }}
         INFOBLOX_USERNAME: ${{ secrets.INFOBLOX_JHUB_USER }}
         INFOBLOX_PASSWORD: ${{ secrets.INFOBLOX_JHUB_PSWD }}
-
-  docker-cleanup:
-    needs: [terraform-tests]
-    runs-on: self-hosted
-    steps:
-    - name: Clean up docker images
-      run: |
-        docker images --filter=reference='brownuniversity/terraform-infoblox-record-a'
-        docker images --filter=reference='brownuniversity/terraform-infoblox-record-a' --filter "dangling=true" | grep -E "brownuniversity/terraform-infoblox-record-a" | awk '{ print $3 }' | xargs docker rmi || :
-        echo "After cleanup"
-        docker images --filter=reference='brownuniversity/terraform-infoblox-record-a'
