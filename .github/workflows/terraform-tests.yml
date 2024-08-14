@@ -14,13 +14,9 @@ jobs:
   terraform-tests:
     runs-on: self-hosted
     container:
-      image: ubuntu:latest
+      image: hashicorp/terraform:1.9
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.9.2
       - name: Run terraform test
         run: |
           terraform init
