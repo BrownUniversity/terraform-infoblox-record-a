@@ -16,7 +16,7 @@ jobs:
     container:
       image: hashicorp/terraform:1.12.2
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Run terraform test
         run: |
           terraform init
