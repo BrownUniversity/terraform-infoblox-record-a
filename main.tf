@@ -15,10 +15,5 @@ resource "infoblox_a_record" "a_record" {
   ttl          = var.ttl
   dns_view     = var.record_dns_view
   network_view = var.network_view
-  ext_attrs = jsonencode(
-    merge(
-      { "Tenant ID" = var.record_hostname },
-      var.ext_attrs
-    )
-  )
+  ext_attrs    = jsonencode(var.ext_attrs)
 }

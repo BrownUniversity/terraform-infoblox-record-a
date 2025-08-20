@@ -51,19 +51,19 @@ INFOBLOX_SERVER
 This folder defines a [Terraform module](https://www.terraform.io/docs/modules/usage.html), which you can use in your
 code by adding a `module` configuration and setting its `source` parameter to URL of this folder. See the [examples](/examples) folder for guidance
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12.2 |
 | <a name="requirement_infoblox"></a> [infoblox](#requirement\_infoblox) |  = 2.1 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_infoblox"></a> [infoblox](#provider\_infoblox) | 2.1.0 |
+| <a name="provider_infoblox"></a> [infoblox](#provider\_infoblox) |  = 2.1 |
 
 ## Modules
 
@@ -97,33 +97,12 @@ No modules.
 | <a name="output_id"></a> [id](#output\_id) | ID of provisioned infoblox resource |
 | <a name="output_ip_address"></a> [ip\_address](#output\_ip\_address) | The IP address associated with the A record |
 | <a name="output_network_view"></a> [network\_view](#output\_network\_view) | n/a |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
 
 
 ## Testing
 
-This repository uses Kitchen-Terraform to test the terraform modules. In the [examples](/examples)directory you can find examples of how each module can be used. Those examples are fed to [Test Kitchen][https://kitchen.ci/]. To install test kitchen, first make sure you have Ruby and bundler installed.
-
-```
-brew install ruby
-gem install bundler
-```
-
-Then install the prerequisites for test kitchen.
-
-```
-bundle install
-```
-
-You'll need to add some common credentials and secret variables
-
-And now you're ready to run test kitchen. Test kitchen has a couple main commands:
-
-- `bundle exec kitchen create` initializes terraform.
-- `bundle exec kitchen converge` runs our terraform examples.
-- `bundle exec kitchen verify` runs our inspec scripts against a converged kitchen.
-- `bundle exec kitchen test` does all the above.
-
+Use `terraform test`! It's great.
 
 ## Development
 
